@@ -18,8 +18,8 @@ namespace StatisticSystem.FSM.FSMComponents
         public override IEnumerator EndRoutine()
         {
             //do something...
-            
-            return _myRoutine;
+
+            return base.EndRoutine();
 
         }
     }

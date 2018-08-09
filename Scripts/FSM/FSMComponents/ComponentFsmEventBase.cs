@@ -26,7 +26,7 @@ namespace StatisticSystem.FSM.FSMComponents
 
         public virtual IEnumerator EndRoutine()
         {
-            throw new NotImplementedException();
+            return _myRoutine;
         }
     }
 }
