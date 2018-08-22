@@ -9,5 +9,6 @@ namespace StatisticSystem.FSM
         IEnumerator StartRoutine();
         IEnumerator Routine();
         IEnumerator EndRoutine();
+        Statistic GetStatistic();
     }
 }

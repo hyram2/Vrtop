@@ -1,12 +1,23 @@
 ﻿using System;
 using System.Collections;
+using UnityEngine;
 
 namespace StatisticSystem.FSM.FSMComponents
 {
-    class ComponentFsmEventBase<T> : IEventStatistic where T : Statistic
+    class MonoComponentFsmEventBase<T> : MonoBehaviour, IEventStatistic where T : Statistic
     {
+        [NonSerialized]
         internal T _myStatistic;
+        [NonSerialized]
         internal IEnumerator _myRoutine;
+        [SerializeField]
+        private MainFSM _mainFsm;
+
+        public void Start()
+        {
+            _mainFsm = FindObjectOfType<MainFSM>();
+            _mainFsm.AddRoutine(this);
+        }
 
         public Guid GetId()
         {
@@ -32,6 +43,11 @@ namespace StatisticSystem.FSM.FSMComponents
         public Statistic GetStatistic()
         {
             return _myStatistic;
+        }
+
+        public void OnDestroy()
+        {
+            _mainFsm.RemoveRoutine(GetId());
         }
     }
 }

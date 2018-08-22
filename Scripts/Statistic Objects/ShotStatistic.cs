@@ -1,11 +1,19 @@
-﻿using UnityEngine;
+﻿using System;
+using StatisticSystem.Enum;
+using UnityEngine;
 
 namespace StatisticSystem
 {
-    class ShotStatistic : Statistic
+    internal class ShotStatistic : Statistic
     {
-        Time TimeOfShot;
-        Vector2 DistanceOfCenter;//x+y
-        EFailShot? FailShot;
+       public DateTime TimeOfShot;
+       public Vector3 PointOfCollision;//x+y
+       public Vector3 PointTargetPosition;//x+y
+       public EFailShot? FailShot;
+
+        public ShotStatistic()
+        {
+            MyType = this.GetType();
+        }
     }
 }
