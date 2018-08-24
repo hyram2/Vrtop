@@ -17,10 +17,15 @@ namespace StatisticSystem.FSM.FSMComponents
 
         public ETargetType TargetType;
 
+        public void Awake()
+        {
+            _myStatistic = new TargetStatistic { TypeOfTarget = TargetType };
+        }
+
         public new void Start()
         {
             base.Start();
-            _myStatistic.TypeOfTarget = TargetType;
+         
         }
 
         //TODO:TESTAR!! Pode dar o erro obvio em que perde-se a referencia da instancia quando destroi o objeto
@@ -35,13 +40,16 @@ namespace StatisticSystem.FSM.FSMComponents
             base.OnDestroy();
         }
 
+        
+
         public void OnRenderObject()
         {
             _myStatistic.InitialTimeInFov = DateTime.Now;
         }
         public void Damage(DamageInfo info)
         {
-            try{
+            try
+            {
                 var shotStatistic = new ShotStatistic
                 {
                     PointOfCollision = info.hitInfo.point,
@@ -49,17 +57,20 @@ namespace StatisticSystem.FSM.FSMComponents
                     TimeOfShot = DateTime.Now,
                     FailShot = _myStatistic.TypeOfTarget == ETargetType.Hostage
                         ? EFailShot.HitHostage
-                        : (EFailShot?) null
-                    
+                        : (EFailShot?)null
+
 
                 };
                 _myStatistic.BulletReceiverShotStatistics.Add(shotStatistic);
-                
-            }catch(Exception e) {
+
+            }
+            catch (Exception e)
+            {
                 Debug.LogWarning(e.Message);
             }
 
         }
 
     }
+
 }

@@ -2,15 +2,28 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Assets.Scripts.Utility;
 using UnityEngine;
-
+using UnityEngine.UI;
 namespace StatisticSystem.FSM
 {
     class MainFSM : MonoBehaviour //need to be singleton
     {
-        private readonly List<IEventStatistic> _eventRoutines = new List<IEventStatistic>();
+        public Text textoDeEstatisticas;
+        public Button PegarEstatisticas;
 
-        private readonly List<Statistic> _statistics = new List<Statistic>();
+        private readonly List<IEventStatistic> _eventRoutines = new List<IEventStatistic>();
+        private readonly StatisticConversor _statisticConversor = new StatisticConversor();
+
+        void Start()
+        {
+            PegarEstatisticas.onClick.AddListener(() =>
+            {
+               FindObjectOfType<MainFSM>().EndStatistic();
+            });
+        }
+
+
         public bool RemoveRoutine(Guid idRoutine)
         {
             var eventStatistics = _eventRoutines.FirstOrDefault(statistic => statistic.GetId() == idRoutine);
@@ -19,11 +32,11 @@ namespace StatisticSystem.FSM
             {
                 StopCoroutine(eventStatistics.EndRoutine());
                 var newStatistic = eventStatistics.GetStatistic();
-                _statistics.Add(newStatistic);
+                _statisticConversor.SaveStatisticObj(newStatistic);
             }
             else
             {
-                Debug.LogWarning("We got a problem here!- FALA PRO HYRAM!!");
+                Debug.LogWarning("We got a problem here!- FALA PRO HYRAM!! Solução DTO");
             }
 
             return true;
@@ -31,6 +44,8 @@ namespace StatisticSystem.FSM
 
         public void AddRoutine(IEventStatistic newRoutine)
         {
+            print(newRoutine.GetId());
+            print(newRoutine.GetType().Name);
              _eventRoutines.Add(newRoutine);
              StartCoroutine(newRoutine.StartRoutine());
         }
@@ -39,12 +54,7 @@ namespace StatisticSystem.FSM
         {
             //StopAllRoutines
             _eventRoutines.All(e => RemoveRoutine(e.GetId()));
-
-            foreach (var statistic in _statistics)
-            {
-
-            }
-
+            textoDeEstatisticas.text = _statisticConversor.GetAnalizes();
         }
     }
 }

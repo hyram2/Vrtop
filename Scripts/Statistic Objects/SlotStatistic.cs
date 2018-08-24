@@ -7,7 +7,8 @@ namespace StatisticSystem
     // magazine - bulletReceiver
     internal class SlotStatistic : Statistic
     {
-        public DateTime TimeToReload;
+        public DateTime TimeToUnload;
+        public DateTime TimeToLoad;
         public int StartNumberOfBullets;
         public int NumberOfBullets;
         public int NumberOfBulletRested;
@@ -17,6 +18,16 @@ namespace StatisticSystem
         public SlotStatistic()
         {
             MyType = this.GetType();
+        }
+        public SlotStatistic(SlotStatistic oldSlotStatistic)
+        {
+            Id = oldSlotStatistic.Id;
+            TimeToUnload = oldSlotStatistic.TimeToUnload;
+            StartNumberOfBullets = oldSlotStatistic.StartNumberOfBullets;
+            NumberOfBullets = oldSlotStatistic.NumberOfBullets;
+            NumberOfBulletRested = oldSlotStatistic.NumberOfBulletRested;
+            IsAutomaticLoad = oldSlotStatistic.IsAutomaticLoad;
+            TimeOpenedTrigger = oldSlotStatistic.TimeOpenedTrigger;
         }
     }
 }

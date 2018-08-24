@@ -16,5 +16,13 @@ namespace StatisticSystem
         {
             MyType = this.GetType();
         }
+        public TargetStatistic(TargetStatistic oldTargetStatistic)
+        {
+            Id = oldTargetStatistic.Id;
+            InitialTimeInFov = oldTargetStatistic.InitialTimeInFov;
+            InitialTimeTargetInFocus = oldTargetStatistic.InitialTimeTargetInFocus;
+            EndTimeOfTargetInFocus = oldTargetStatistic.EndTimeOfTargetInFocus;
+            TypeOfTarget = oldTargetStatistic.TypeOfTarget;
+        }
     }
 }

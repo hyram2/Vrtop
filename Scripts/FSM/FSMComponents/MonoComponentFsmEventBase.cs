@@ -13,6 +13,7 @@ namespace StatisticSystem.FSM.FSMComponents
         [SerializeField]
         private MainFSM _mainFsm;
 
+
         public void Start()
         {
             _mainFsm = FindObjectOfType<MainFSM>();
@@ -32,7 +33,7 @@ namespace StatisticSystem.FSM.FSMComponents
 
         public virtual IEnumerator Routine()
         {
-            return null;
+            yield return new WaitForSeconds(0.1f);
         }
 
         public virtual IEnumerator EndRoutine()

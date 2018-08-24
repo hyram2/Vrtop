@@ -15,5 +15,15 @@ namespace StatisticSystem
         {
             MyType = this.GetType();
         }
+        public ShotStatistic(ShotStatistic oldShotStatistic)
+        {
+            Id = oldShotStatistic.Id;
+            TimeOfShot = oldShotStatistic.TimeOfShot;
+            PointOfCollision = oldShotStatistic.PointOfCollision;
+            PointTargetPosition = oldShotStatistic.PointTargetPosition;
+            FailShot = oldShotStatistic.FailShot;
+        }
+        
+        
     }
 }

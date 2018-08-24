@@ -15,5 +15,14 @@ namespace StatisticSystem
         {
             MyType = this.GetType();
         }
+
+        public WeaponTargetStatistic(WeaponTargetStatistic oldWeaponStatistic)
+        {
+            Id = oldWeaponStatistic.Id;
+            PathOfVisionInTarget = oldWeaponStatistic.PathOfVisionInTarget;
+            MagazineStatistics = oldWeaponStatistic.MagazineStatistics;
+            ShotsWithoutMagazine = oldWeaponStatistic.ShotsWithoutMagazine;
+        }
+
     }
 }

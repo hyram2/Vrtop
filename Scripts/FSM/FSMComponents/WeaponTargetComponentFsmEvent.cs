@@ -15,16 +15,19 @@ namespace StatisticSystem.FSM.FSMComponents
     class WeaponTargetComponentFsmEvent : MonoComponentFsmEventBase<WeaponTargetStatistic>
     {
         public float SecondsBetweenRayCast = 0.1f;
-        private Guid _lastTargetId;
+        private Guid? _lastTargetId;
         [SerializeField]
-        private VRGunHandlerRef _gunRef;
+        private System.Object _gunRef;
 
         private AudioSource _soundSource;
 
+        public bool heldBy;
         private Guid? _currentMagazineStatisticId;
 
         public new void Start()
         {
+
+            _myStatistic = new WeaponTargetStatistic();
             base.Start();
             _gunRef = GetComponent<VRGunHandlerRef>();
             if (_gunRef.gunHandler.fireRate < SecondsBetweenRayCast)
@@ -40,7 +43,7 @@ namespace StatisticSystem.FSM.FSMComponents
             {
                 yield return new WaitForSeconds(SecondsBetweenRayCast);
 
-                if (_gunRef.gunHandler.heldBy == null) continue;
+                if (!heldBy) continue;
                 //Todo:Refatorar isso
 
                 #region VisionStatistic
@@ -81,7 +84,7 @@ namespace StatisticSystem.FSM.FSMComponents
                     if (_lastTargetId != null)
                     {
                         var lastTargetStatistic = _myStatistic.PathOfVisionInTarget
-                            .FirstOrDefault(pair => pair.Key.Id == _lastTargetId).Key;
+                            .FirstOrDefault(pair => pair.Key.Id == _lastTargetId.Value).Key;
                         lastTargetStatistic.EndTimeOfTargetInFocus = DateTime.Now;
                     }
                     Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * 1000, Color.white);
@@ -92,11 +95,11 @@ namespace StatisticSystem.FSM.FSMComponents
 
 
                 #region Magazine
-                //motivo: nao Mexer na classe do VRInteraction
+                ////motivo: nao Mexer na classe do VRInteraction
 
                 if (_soundSource.clip == _gunRef.gunHandler.loadMagazine)
                 {
-                    //sempre retorna nulo!
+
                     var magazineStatistic = _myStatistic.MagazineStatistics.FirstOrDefault(m =>
                     {
                         return _currentMagazineStatisticId != null && m.Id == _currentMagazineStatisticId.Value;
@@ -106,7 +109,9 @@ namespace StatisticSystem.FSM.FSMComponents
                     {
                         magazineStatistic = new SlotStatistic();
                         //get new Magazine
-
+                        magazineStatistic.TimeToLoad = DateTime.Now;
+                        _currentMagazineStatisticId = magazineStatistic.Id;
+                        _myStatistic.MagazineStatistics.Add(magazineStatistic);
                         var newMagazine = _gunRef.gunHandler.currentMagazine;
                         magazineStatistic.StartNumberOfBullets = newMagazine.bulletCount;
 
